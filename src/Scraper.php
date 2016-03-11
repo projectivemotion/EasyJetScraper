@@ -51,7 +51,33 @@ class Scraper extends CacheScraper
         return basename($url) . '.html';
     }
 
-    public function getFlightsInfo($days_pq)
+    public function getFlightNumber($flightToAddState, $pagevars, $isInbound)
+    {
+        $sendVars   =   $pagevars;
+        $sendVars['flightToAddState']   =   $flightToAddState;
+
+        $response   =   $this->getCurl('/EN/BasketView.mvc/AddFlight', $sendVars);
+        
+        $json   =   json_decode($response);
+
+        if(!$json)
+            throw new Exception("Unable to add Flight.");
+
+        if(!preg_match_all('/Flight (\w+)/', $json->Html, $matches))
+            throw new Exception('Unable to find Flight Number!');
+        
+        return $matches[1][(int)$isInbound];
+    }
+
+    public static function getBasketOptions($page)
+    {
+        if(!preg_match("#BasketOptions[^=]*=[\\s\\S]*?'(\w+)'#", $page, $matches))
+            throw new Exception('Unable to find BasketOptions');
+
+        return $matches[1];
+    }
+
+    public function getFlightsInfo($days_pq, $vars, $isInbound = 0)
     {
         $dates  =   [];
 
@@ -79,7 +105,8 @@ class Scraper extends CacheScraper
                     'charge-debit'  =>  strip_tags($flight_element->attr('charge-debit')),
                     'charge-debit-full' =>  strip_tags($flight_element->attr('charge-debit-full')),
                     'charge-credit' =>  strip_tags($flight_element->attr('charge-credit')),
-                    'charge-credit-full'    =>  strip_tags($flight_element->attr('charge-credit-full'))
+                    'charge-credit-full'    =>  strip_tags($flight_element->attr('charge-credit-full')),
+                    'flight_number' =>  $this->getFlightNumber($day_div->find('li')->attr('id'), $vars, $isInbound)
                 ];
             }
 
@@ -89,15 +116,27 @@ class Scraper extends CacheScraper
         return $dates;
     }
 
+    public static function getPageVars(\phpQueryObject $doc)
+    {
+        return [
+            '__BasketState' =>  $doc['#__BasketState']->val(),
+            'flightSearchSession'   => $doc['#flightSearchSession']->val(),
+            'flightToAddState'  =>  NULL,   // to be defined
+            'flightOptionsState'    =>  'Visible',
+            'basketOptions' =>  self::getBasketOptions($doc->html()),
+        ];
+    }
+
     public function getPageFlightsInfo($page)
     {
         $doc    =   \phpQuery::newDocument($page);
         $outbound_divs   =   $doc['#OutboundFlightDetails .OutboundDaySliderContainer .day'];
         $inbound_divs    =   $doc['#ReturnFlightDetails .ReturnDaySliderContainer .day'];
+        $pagevars   =   self::getPageVars($doc);
 
         $info   =   (object)[];
-        $info->outbound =   $this->getFlightsInfo($outbound_divs);
-        $info->inbound =   $this->getFlightsInfo($inbound_divs);
+        $info->outbound =   $this->getFlightsInfo($outbound_divs, $pagevars, 0);
+        $info->inbound =   $this->getFlightsInfo($inbound_divs, $pagevars, 1);
 
         return $info;
     }
