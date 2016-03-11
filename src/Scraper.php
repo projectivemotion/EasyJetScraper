@@ -135,8 +135,11 @@ class Scraper extends CacheScraper
         $pagevars   =   self::getPageVars($doc);
 
         $info   =   (object)[];
+        // the order of the following two lines is a bit of a hack and may need to be fixed in the near future.
+        // if an inbound flight is selected before outbound flight, it will display that flight information on top of
+        // the empty outbound flight info.
+        $info->inbound =   $this->getFlightsInfo($inbound_divs, $pagevars, 0);
         $info->outbound =   $this->getFlightsInfo($outbound_divs, $pagevars, 0);
-        $info->inbound =   $this->getFlightsInfo($inbound_divs, $pagevars, 1);
 
         return $info;
     }

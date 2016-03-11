@@ -20,12 +20,12 @@ foreach($autoload_files as $autoload_file)
 }
 // end autoloader finder
 
-$FQ =   new \projectivemotion\EasyJetScraper\FlightQuery('SXF', 'AGA', '2016-03-12', '2016-03-15');
+$FQ =   new \projectivemotion\EasyJetScraper\FlightQuery('SKG', 'SXF', '2016-05-01', '2016-05-02');
 $Scraper    =   new \projectivemotion\EasyJetScraper\Scraper();
 
 // Uncomment for development purposes
 //$Scraper->setCacheDir('../');
-$Scraper->cacheOn();
+$Scraper->cacheOff();
 //$Scraper->verboseOn();
 
 $flights    =   $Scraper->getFlights($FQ);
