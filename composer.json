@@ -1,0 +1,30 @@
+{
+  "name": "projectivemotion/EasyJetScraper",
+  "description": "Easyjet Airline Flights Price Scraper",
+  "minimum-stability": "dev",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Amado Martinez",
+      "email": "amado@projectivemotion.com"
+    }
+  ],
+  "repositories": [
+    {
+      "url": "https://github.com/projectivemotion/PhpScraperTools",
+      "type": "git"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "projectivemotion\\EasyJetScraper\\": "src/"
+    }
+  },
+  "require": {
+    "projectivemotion/PhpScraperTools": "0.0.2",
+    "atofighi/phpquery": "2.0.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "5.0.*"
+  }
+}
