@@ -23,7 +23,7 @@ foreach($autoload_files as $autoload_file)
 $FQ =   new \projectivemotion\EasyJetScraper\FlightQuery('SXF', 'AGA', '2016-03-12', '2016-03-15');
 $Scraper    =   new \projectivemotion\EasyJetScraper\Scraper();
 
-// Uncomment for development purposses
+// Uncomment for development purposes
 //$Scraper->setCacheDir('../');
 $Scraper->cacheOn();
 //$Scraper->verboseOn();
@@ -35,10 +35,11 @@ foreach(array('outbound', 'inbound') as $direction)
     foreach($flights->$direction as $date_YMD   =>  $flight)
     {
         if($flight->available)
-            printf("%s,%s,%s,%s,%s,%s,%s,%s,%s\n",
+            printf("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n",
                 $direction,
                 "Available",
                 $date_YMD,
+                $flight->flight_number,
                 $flight->flightDepartureDate->format("Y-m-d H:i:s"),
                 $flight->flightArrivalDate->format("Y-m-d H:i:s"),
                 $flight['charge-debit'],
