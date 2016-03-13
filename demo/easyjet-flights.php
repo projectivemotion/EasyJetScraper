@@ -32,7 +32,7 @@ try{
     $flights    =   $Scraper->getFlights($FQ);
 }catch (\projectivemotion\EasyJetScraper\ScraperBlockedException $blocked)
 {
-    die("Scraper blocked! Message: " . $blocked->getMessage());
+    die("Scraper blocked! Message: " . $blocked->getMessage(). "\n");
 }
 
 foreach(array('outbound', 'inbound') as $direction)
