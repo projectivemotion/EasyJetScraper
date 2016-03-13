@@ -69,10 +69,29 @@ class Scraper extends CacheScraper
         return $matches[1][(int)$isInbound];
     }
 
-    public static function getBasketOptions($page)
+    public function throwException($page, $message)
+    {
+        $error_page =   'easyjet-' . date('Ymd') . '.html';
+
+        if($this->use_cache)
+        {
+            $path   =   $this->getCacheDir() . $error_page;
+            file_put_contents($path, $page);
+            $message .= "\nPlease look in $path";
+        }
+
+        if(stripos($page, 'blocked@easyjet.com') !== FALSE)
+        {
+            throw new ScraperBlockedException($message);
+        }
+
+        throw new Exception($message);
+    }
+
+    public function getBasketOptions($page)
     {
         if(!preg_match("#BasketOptions[^=]*=[\\s\\S]*?'(\w+)'#", $page, $matches))
-            throw new Exception('Unable to find BasketOptions');
+            $this->throwException($page, 'Unable to find BasketOptions');
 
         return $matches[1];
     }
@@ -116,14 +135,14 @@ class Scraper extends CacheScraper
         return $dates;
     }
 
-    public static function getPageVars(\phpQueryObject $doc)
+    public function getPageVars(\phpQueryObject $doc)
     {
         return [
             '__BasketState' =>  $doc['#__BasketState']->val(),
             'flightSearchSession'   => $doc['#flightSearchSession']->val(),
             'flightToAddState'  =>  NULL,   // to be defined
             'flightOptionsState'    =>  'Visible',
-            'basketOptions' =>  self::getBasketOptions($doc->html()),
+            'basketOptions' =>  $this->getBasketOptions($doc->html()),
         ];
     }
 
@@ -132,7 +151,7 @@ class Scraper extends CacheScraper
         $doc    =   \phpQuery::newDocument($page);
         $outbound_divs   =   $doc['#OutboundFlightDetails .OutboundDaySliderContainer .day'];
         $inbound_divs    =   $doc['#ReturnFlightDetails .ReturnDaySliderContainer .day'];
-        $pagevars   =   self::getPageVars($doc);
+        $pagevars   =   $this->getPageVars($doc);
 
         $info   =   (object)[];
         // the order of the following two lines is a bit of a hack and may need to be fixed in the near future.

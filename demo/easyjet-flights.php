@@ -22,13 +22,18 @@ foreach($autoload_files as $autoload_file)
 
 $FQ =   new \projectivemotion\EasyJetScraper\FlightQuery('SKG', 'SXF', '2016-05-01', '2016-05-02');
 $Scraper    =   new \projectivemotion\EasyJetScraper\Scraper();
-
+$Scraper->cacheOn();
 // Uncomment for development purposes
 //$Scraper->setCacheDir('../');
-$Scraper->cacheOff();
+//$Scraper->cacheOff();
 //$Scraper->verboseOn();
 
-$flights    =   $Scraper->getFlights($FQ);
+try{
+    $flights    =   $Scraper->getFlights($FQ);
+}catch (\projectivemotion\EasyJetScraper\ScraperBlockedException $blocked)
+{
+    die("Scraper blocked! Message: " . $blocked->getMessage());
+}
 
 foreach(array('outbound', 'inbound') as $direction)
 {
