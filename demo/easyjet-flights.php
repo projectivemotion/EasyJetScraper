@@ -22,17 +22,18 @@ foreach($autoload_files as $autoload_file)
 
 $FQ =   new \projectivemotion\EasyJetScraper\FlightQuery('SKG', 'SXF', '2016-05-01', '2016-05-02');
 $Scraper    =   new \projectivemotion\EasyJetScraper\Scraper();
-$Scraper->cacheOn();
+//$Scraper->cacheOn();
+$Scraper->cacheOff();
 // Uncomment for development purposes
 //$Scraper->setCacheDir('../');
-//$Scraper->cacheOff();
-//$Scraper->verboseOn();
+$Scraper->verboseOn();
 
 try{
     $flights    =   $Scraper->getFlights($FQ);
 }catch (\projectivemotion\EasyJetScraper\ScraperBlockedException $blocked)
 {
-    die("Scraper blocked! Message: " . $blocked->getMessage(). "\n");
+    echo("Scraper blocked! Message: " . $blocked->getMessage(). "\n");
+    exit(1);    // error
 }
 
 foreach(array('outbound', 'inbound') as $direction)
@@ -56,3 +57,4 @@ foreach(array('outbound', 'inbound') as $direction)
             printf("%s,%s,%s\n", $direction, "Unvailable", $date_YMD);
     }
 }
+

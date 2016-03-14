@@ -14,8 +14,15 @@ class Scraper extends CacheScraper
 {
     protected $domain   =   'www.easyjet.com';
     protected $cache_prefix =   'easyjet';
+    protected $sleep    =   10;
 
     protected $initialized      =   false;
+
+    public function sleep()
+    {
+        if(!$this->sleep)   return;
+        sleep($this->sleep);
+    }
 
     public static function QueryToPOST(FlightQuery $query)
     {
@@ -53,6 +60,8 @@ class Scraper extends CacheScraper
 
     public function getFlightNumber($flightToAddState, $pagevars, $isInbound)
     {
+        $this->sleep();
+
         $sendVars   =   $pagevars;
         $sendVars['flightToAddState']   =   $flightToAddState;
 
@@ -169,14 +178,17 @@ class Scraper extends CacheScraper
         if(!$this->getInitialized())
         {
             $home   =   $this->InitHome();
+            $this->sleep();
         }
 
         $searchParams   =   self::QueryToPOST($query);
 
         $page   =   $this->cache_get('/links.mvc?' . http_build_query($searchParams));
 
-        $results    =   $this->getPageFlightsInfo($page);
+        $this->sleep();
 
+        $results    =   $this->getPageFlightsInfo($page);
+        
         return $results;
     }
 

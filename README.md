@@ -7,9 +7,9 @@ I am not responsible for your use of this software. Please do not abuse! Please 
 ### Installation
 With composer
 
-> git clone https://github.com/projectivemotion/EasyJetScraper
+> git clone https://github.com/projectivemotion/easyjet-scraper
 
-> cd EasyJetScraper/
+> cd easyjet-scraper/
 
 > composer install --no-dev
   
