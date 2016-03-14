@@ -1,22 +1,23 @@
 # EasyJet-Scraper
 Easyjet Airline Flights Price Scraper
 
+
+[![Build Status](https://travis-ci.org/projectivemotion/easyjet-scraper.svg?branch=master)](https://travis-ci.org/projectivemotion/easyjet-scraper)
+
+
 ## Use at your own risk!
-I am not responsible for your use of this software. Please do not abuse! Please do not be stupid!
+* I am not responsible for your use of this software.
+* Please do not abuse!
+* Please do not be stupid!
+
 
 ### Installation
-With composer
 
-> git clone https://github.com/projectivemotion/easyjet-scraper
-
-> cd easyjet-scraper/
-
-> composer install --no-dev
-  
+> composer require projectivemotion/easyjet-scraper
 
 ## Usage
-See Demo:
-> php -f demo/easyjet-flights.php
+
+> php -f vendor/projectivemotion/easyjet-scraper/demo/easyjet-flights.php
 
 # License
 The MIT License (MIT)
