@@ -14,18 +14,60 @@ class Scraper extends CacheScraper
 {
     protected $domain   =   'www.easyjet.com';
     protected $cache_prefix =   'easyjet';
-    protected $sleep    =   10;
 
     protected $initialized      =   false;
+    protected $delay    =   10;
 
-    public function sleep()
+    protected $adults   =   1;
+    protected $children =   0;
+    protected $infants  =   0;
+
+    public function setDelay($delay)
     {
-        if(!$this->sleep)   return;
-        sleep($this->sleep);
+        $this->delay = $delay;
     }
 
-    public static function QueryToPOST(FlightQuery $query)
+    public function setAdults($adults)
     {
+        $this->adults = $adults;
+    }
+
+    public function setChildren($children)
+    {
+        $this->children = $children;
+    }
+
+    public function setInfants($infants)
+    {
+        $this->infants = $infants;
+    }
+
+    public function getAdults()
+    {
+        return $this->adults;
+    }
+
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    public function getInfants()
+    {
+        return $this->infants;
+    }
+    
+    public function delay()
+    {
+        if(!$this->delay)   return;
+        sleep($this->delay);
+    }
+
+    public function QueryToPOST(FlightQuery $query)
+    {
+        if($query->getOutboundDate() < date_create())
+            throw new Exception("Please check your flight dates: " . $query->getOutboundDateString());
+
         return [
             'dep'   =>  $query->getOrigin(),
             'dest'  =>  $query->getDestination(),
@@ -34,18 +76,12 @@ class Scraper extends CacheScraper
             'isOneWay'  =>  $query->IsOneWayFlight() ? 'on' : 'off',
             'searchFrom'    =>  'SearchPod|/en/',
             'pid'   =>  'www.easyjet.com',
-            'apax'  =>  1,
-            'cpax'  =>  0,
-            'ipax'  =>  0,
+            'apax'  =>  $this->getAdults(),
+            'cpax'  =>  $this->getChildren(),
+            'ipax'  =>  $this->getInfants(),
             'lang'  =>  'EN'
         ];
     }
-
-    public function getCookieFileName()
-    {
-        return 'easyjet-cookie.txt';
-    }
-
 
     public function InitHome()
     {
@@ -60,7 +96,7 @@ class Scraper extends CacheScraper
 
     public function getFlightNumber($flightToAddState, $pagevars, $isInbound)
     {
-        $this->sleep();
+        $this->delay();
 
         $sendVars   =   $pagevars;
         $sendVars['flightToAddState']   =   $flightToAddState;
@@ -174,18 +210,18 @@ class Scraper extends CacheScraper
 
     public function getFlights(FlightQuery $query)
     {
+        $searchParams   =   $this->QueryToPOST($query);
+
         // init some cookies and things
         if(!$this->getInitialized())
         {
             $home   =   $this->InitHome();
-            $this->sleep();
+            $this->delay();
         }
-
-        $searchParams   =   self::QueryToPOST($query);
 
         $page   =   $this->cache_get('/links.mvc?' . http_build_query($searchParams));
 
-        $this->sleep();
+        $this->delay();
 
         $results    =   $this->getPageFlightsInfo($page);
         
@@ -200,5 +236,10 @@ class Scraper extends CacheScraper
     public function getInitialized()
     {
         return $this->initialized;
+    }
+
+    public function removeAllCookies()
+    {
+        unlink($this->getCookieFileName());
     }
 }
