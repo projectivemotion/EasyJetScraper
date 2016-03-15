@@ -26,7 +26,9 @@ $Scraper    =   new \projectivemotion\EasyJetScraper\Scraper();
 $Scraper->cacheOff();
 // Uncomment for development purposes
 //$Scraper->setCacheDir('../');
-$Scraper->verboseOn();
+//$Scraper->verboseOn();
+$Scraper->setCookieFileName('easyjet-cookie.txt');
+$Scraper->removeAllCookies();
 
 try{
     $flights    =   $Scraper->getFlights($FQ);

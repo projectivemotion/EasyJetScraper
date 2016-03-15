@@ -83,11 +83,6 @@ class Scraper extends CacheScraper
         ];
     }
 
-    public function getCookieFileName()
-    {
-        return 'easyjet-cookie.txt';
-    }
-
     public function InitHome()
     {
         $this->setInitialized(true);
@@ -241,5 +236,10 @@ class Scraper extends CacheScraper
     public function getInitialized()
     {
         return $this->initialized;
+    }
+
+    public function removeAllCookies()
+    {
+        unlink($this->getCookieFileName());
     }
 }
