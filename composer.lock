@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3832b214bc4a7b4a82f53f1fa45264b6",
-    "content-hash": "22d16ff855c345f6f04db606cd1f6d74",
+    "hash": "293183ddca1a11d328d02ef2a6aa4bc4",
+    "content-hash": "71b2ae10c354412c2db0fa6fade42fa0",
     "packages": [
         {
             "name": "atofighi/phpquery",
@@ -53,16 +53,16 @@
         },
         {
             "name": "projectivemotion/php-scraper-tools",
-            "version": "0.0.3",
+            "version": "0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/projectivemotion/php-scraper-tools.git",
-                "reference": "a3d931f94d27a29f184d5f5c31d395f7372e9c09"
+                "reference": "e68f2f22f7c81ba5e24aeb4c535d80f47ea53ce5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/projectivemotion/php-scraper-tools/zipball/a3d931f94d27a29f184d5f5c31d395f7372e9c09",
-                "reference": "a3d931f94d27a29f184d5f5c31d395f7372e9c09",
+                "url": "https://api.github.com/repos/projectivemotion/php-scraper-tools/zipball/e68f2f22f7c81ba5e24aeb4c535d80f47ea53ce5",
+                "reference": "e68f2f22f7c81ba5e24aeb4c535d80f47ea53ce5",
                 "shasum": ""
             },
             "require-dev": {
@@ -86,7 +86,7 @@
                 }
             ],
             "description": "PHP Curl Wrapper. Written specifically for scraping purposes.",
-            "time": "2016-03-11 22:47:25"
+            "time": "2016-06-27 23:27:15"
         }
     ],
     "packages-dev": [],
