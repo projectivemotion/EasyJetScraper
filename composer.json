@@ -18,7 +18,7 @@
     }
   },
   "require": {
-    "projectivemotion/php-scraper-tools": "^0",
+    "projectivemotion/php-scraper-tools": "~1",
     "atofighi/phpquery": "2.0.1",
     "php": ">=5.4.0"
   }
