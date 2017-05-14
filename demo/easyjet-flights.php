@@ -20,7 +20,7 @@ foreach($autoload_files as $autoload_file)
 }
 // end autoloader finder
 
-$FQ =   new \projectivemotion\EasyJetScraper\FlightQuery('SKG', 'BUD', '2017-09-01', '2017-09-02');
+$FQ =   new \projectivemotion\EasyJetScraper\FlightQuery('SKG', 'BSL', '2017-05-16', '2017-05-20');
 $Scraper    =   new \projectivemotion\EasyJetScraper\Scraper();
 
 try{

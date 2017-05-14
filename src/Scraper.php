@@ -56,7 +56,7 @@ class Scraper
             'MinDepartureDate' => $query->getOutboundDate() ->sub($int1d)->format('Y-m-d'),
             'MinReturnDate' => $query->getInboundDate() ->sub($int1d)->format('Y-m-d') ];
 
-        $url = "/ejavailability/api/v8/availability/query?" . http_build_query($params);
+        $url = "/ejavailability/api/v9/availability/query?" . http_build_query($params);
 
         return $url;
     }

@@ -16,7 +16,7 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
     public function testFoo()
     {
         $scraper = new Scraper();
-        $fq = new FlightQuery('SKG', 'SXF', '2017-05-10', '2017-05-20');
+        $fq = new FlightQuery('SKG', 'BSL', '2017-05-16', '2017-05-20');
         try {
             $response = $scraper->getFlights($fq);
             $this->assertInternalType('object', $response);
