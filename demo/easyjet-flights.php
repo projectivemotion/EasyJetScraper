@@ -20,43 +20,16 @@ foreach($autoload_files as $autoload_file)
 }
 // end autoloader finder
 
-$FQ =   new \projectivemotion\EasyJetScraper\FlightQuery('SKG', 'SXF', '2016-05-01', '2016-05-02');
+$FQ =   new \projectivemotion\EasyJetScraper\FlightQuery('SKG', 'BSL', '2017-05-16', '2017-05-20');
 $Scraper    =   new \projectivemotion\EasyJetScraper\Scraper();
-//$Scraper->cacheOn();
-$Scraper->cacheOff();
-// Uncomment for development purposes
-//$Scraper->setCacheDir('../');
-//$Scraper->verboseOn();
-$Scraper->setCookieFileName('easyjet-cookie.txt');
-$Scraper->removeAllCookies();
 
 try{
     $flights    =   $Scraper->getFlights($FQ);
-}catch (\projectivemotion\EasyJetScraper\ScraperBlockedException $blocked)
+    print_r($flights);
+}catch (\projectivemotion\EasyJetScraper\Exception $blocked)
 {
     echo("Scraper blocked! Message: " . $blocked->getMessage(). "\n");
     exit(1);    // error
 }
 
-foreach(array('outbound', 'inbound') as $direction)
-{
-    foreach($flights->$direction as $date_YMD   =>  $flight)
-    {
-        if($flight->available)
-            printf("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n",
-                $direction,
-                "Available",
-                $date_YMD,
-                $flight->flight_number,
-                $flight->flightDepartureDate->format("Y-m-d H:i:s"),
-                $flight->flightArrivalDate->format("Y-m-d H:i:s"),
-                $flight['charge-debit'],
-                $flight['charge-debit-full'],
-                $flight['charge-credit'],
-                $flight['charge-credit-full']
-            );
-        else
-            printf("%s,%s,%s\n", $direction, "Unvailable", $date_YMD);
-    }
-}
 

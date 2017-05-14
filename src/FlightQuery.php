@@ -67,13 +67,19 @@ class FlightQuery
         return $this->inbound_date->format($format ?: $this->getDateFormatString());
     }
 
-    public function getInboundDate()
+    public function getInboundDate($clone = true)
     {
+        if($clone)
+            return clone($this->getInboundDate(false));
+
         return $this->inbound_date;
     }
 
-    public function getOutboundDate()
+    public function getOutboundDate($clone = true)
     {
+        if($clone)
+            return clone($this->getOutboundDate(false));
+
         return $this->outbound_date;
     }
 
